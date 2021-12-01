@@ -13,14 +13,13 @@ interface Task {
 export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
-  const [complete, setComplete] = useState(false);
 
   function handleCreateNewTask() {
     if (newTaskTitle) {
       const newTask = {
         id: tasks.length > 0 ? tasks[tasks.length - 1].id + 1 : 1,
         title: newTaskTitle,
-        isComplete: complete,
+        isComplete: false,
       }
       setTasks([...tasks, newTask]);
       setNewTaskTitle('');
@@ -28,7 +27,13 @@ export function TaskList() {
   }
 
   function handleToggleTaskCompletion(id: number) {
-    // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+    const findTask = tasks.map((element) => element.id === id ? (
+      {
+        ...element,
+        isComplete: !element.isComplete
+      }
+    ) : element)
+    setTasks(findTask);
   }
 
   function handleRemoveTask(id: number) {
